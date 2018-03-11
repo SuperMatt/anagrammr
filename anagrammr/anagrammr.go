@@ -2,9 +2,7 @@ package anagrammr
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
-	"sort"
 )
 
 var debug = false
@@ -17,9 +15,9 @@ func debugPrint(s string) {
 }
 
 //FindAnag performs an anagram lookup of the letters in a dictionary with min length of words
-func FindAnag(d *[][]byte, l string, minLen int) ([][]string, string) {
+func FindAnag(d *[][]byte, l string, minLen int) (map[int][]string, string) {
 
-	words := make([][]string, len(l))
+	words := make(map[int][]string, len(l))
 
 	maxLen := len(l)
 	base := make([]int, 26)
@@ -63,17 +61,11 @@ func FindAnag(d *[][]byte, l string, minLen int) ([][]string, string) {
 			}
 		}
 		if !fail {
-			words[len(w)-1] = append(words[len(w)-1], string(w))
+			words[len(w)] = append(words[len(w)], string(w))
 		}
 	}
 
-	for j := len(l) - 1; j >= *minLen-1; j-- {
-		fmt.Println(j+1, "letter words")
-		sort.Strings(ls[j])
-		fmt.Println(ls[j])
-	}
-
-	return s, debugBuffer.String()
+	return words, debugBuffer.String()
 }
 
 //LoadDictFromFile reads a dictionary from a file
