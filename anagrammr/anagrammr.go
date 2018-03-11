@@ -10,7 +10,7 @@ var debugBuffer = bytes.NewBuffer([]byte{})
 
 func debugPrint(s string) {
 	if debug {
-		debugBuffer.WriteString(s)
+		debugBuffer.WriteString(s + "\n")
 	}
 }
 
