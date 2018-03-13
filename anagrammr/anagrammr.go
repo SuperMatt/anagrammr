@@ -3,6 +3,8 @@ package anagrammr
 import (
 	"bytes"
 	"io/ioutil"
+	"sort"
+	"strings"
 )
 
 var debug = false
@@ -124,4 +126,44 @@ func DebugEnable() {
 //DebugDisable disable debugging
 func DebugDisable() {
 	debug = false
+}
+
+//FindAnagsInDict finds all anagrams in a dictionary.
+func FindAnagsInDict(filename string) (w map[string][]string, _ error) {
+	dictBytes, err := ioutil.ReadFile(filename)
+
+	if err != nil {
+		return w, err
+	}
+
+	words := make(map[string][]string)
+	anags := make(map[string][]string)
+
+	word := ""
+	for itr := 0; itr < len(dictBytes); itr++ {
+		lb := dictBytes[itr]
+		if lb != 10 {
+			word += string([]byte{lb})
+		} else {
+			spl := strings.Split(word, "")
+			sort.Strings(spl)
+			sorted := strings.Join(spl, "")
+			_, ok := words[sorted]
+			if ok {
+				words[sorted] = append(words[sorted], word)
+			} else {
+				words[sorted] = []string{word}
+			}
+			word = ""
+		}
+	}
+
+	for k, v := range words {
+		if len(v) > 1 {
+			anags[k] = v
+		}
+	}
+
+	return anags, nil
+
 }
