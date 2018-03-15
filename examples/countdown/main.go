@@ -11,7 +11,6 @@ import (
 func main() {
 	dictFile := flag.String("dict", "/usr/share/dict/british-english", "Path to the dictionary file")
 	letters := flag.String("letters", "", "Letters in which to find anagrams")
-	capsAllowed := flag.Bool("caps", false, "Allow words with caps in dict")
 	minLen := flag.Int("minlen", 4, "Minimum word length")
 	debug := flag.Bool("d", false, "debug mode")
 
@@ -21,7 +20,7 @@ func main() {
 		anagrammr.DebugEnable()
 	}
 
-	d, err := anagrammr.LoadDictFromFile(*dictFile, *capsAllowed)
+	d, err := anagrammr.LoadDictFromFile(*dictFile)
 
 	if err != nil {
 		fmt.Println(err)
